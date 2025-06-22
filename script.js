@@ -1,16 +1,29 @@
 document.addEventListener('DOMContentLoaded', function() {
-    
+
+
      //Selecting DOM elements
     const addButton = document.getElementById('add-task-btn');
     const taskInput = document.getElementById('task-input');
     const taskList = document.getElementById('task-list');
+
+    //initiaze load tasks
+    function loadTask () {
+        const storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        storedTasks.forEach(taskText => addTask(taskText, false));
+    }
     
     //Define function and check if it empty
-    function addTask() {
+    function addTask(taskText, save = true) {   //adjust addTask to save text and to avoid duplicates when loading from local storage
         const taskText = taskInput.value.trim();
         if (taskText === 0);
         alert ('Please enter a task.');
-        return; //stop fuction from proceeding
+        return;
+
+         if (save) {
+        const storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        storedTasks.push(taskText);
+        localStorage.setItem('tasks', JSON.stringify(storedTasks));
+    }
 
         //if function is not empty create a list
         const li = document.createElement('li');
@@ -42,8 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add an event listener to taskInput for the 'keypress' event.
             taskInput.addEventListener('keypress', (event) => {
                   if (event.key === 'Enter') {
-                    addTask();
-                };
+                    addTask(); 
+                  }; 
             });
             
             addTask();
